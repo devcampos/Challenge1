@@ -8,7 +8,7 @@ namespace Challenge1.Service
     public class Service : IService
     {
         public string PrintMatchResult { get; private set; }
-
+        
         public List<string> Process(int cores, string task1, string task2)
         {
             var lastValue = 0;
@@ -61,6 +61,7 @@ namespace Challenge1.Service
             MatchCollection matches = pattern.Matches(r);
             var result = new List<TaskProcess>();
             var forPrint = "";
+            PrintMatchResult = "";
             foreach (Match match in matches)
             {
                 foreach (Capture capture in match.Captures)

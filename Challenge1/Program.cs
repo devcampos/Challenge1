@@ -9,25 +9,45 @@ namespace Challenge1
         static void Main(string[] args)
         {
 
-            var cores = 7;
-            var inputTask1 = "(1, 6), (2, 2), (3, 4)";
-            var inputTask2 = "(1, 2)";
-
-            var s = new Service.Service();            
-            var x = s.GetMatch(inputTask1);
-            s.PrintCorrectlyMatch();
-            var y = s.GetMatch(inputTask2);
-            s.PrintCorrectlyMatch();
-
-            var result = s.Process(cores, inputTask1, inputTask2);
-                    
-            Console.WriteLine($"Final Result : { String.Join(",", result)}");
-            Console.ReadKey();
-
+            Console.WriteLine("Give me a Number of Core:");            
+            int coreValue = 0;
+            string foregroundValue = "";
+            string backgroundValue = "";
+         
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out coreValue) && coreValue != 0)
+                {
+                    Console.WriteLine("Give me a List of foreground tasks with this format (5,8),(7,8):");
+                    foregroundValue = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(foregroundValue))
+                    {
+                        Console.WriteLine("Give me a List of background tasks with this format (1,0),(1,1):");
+                        backgroundValue = Console.ReadLine();
+                        if (!string.IsNullOrEmpty(backgroundValue))
+                        {
+                            DI sv = new DI(new Service.Service());            
+                            Console.WriteLine($"Final Result : {sv.Run(coreValue, foregroundValue, backgroundValue)}");
+                            Console.WriteLine("Press any key for exit, thank you i hope soon.");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("List of background tasks is empty, try again");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("List of foreground tasks is empty, try again");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Not is an integer. try again please.");
+                }
+            }
+            while (coreValue == 0 && string.IsNullOrEmpty(foregroundValue) && string.IsNullOrEmpty(backgroundValue));                   
         }
-
-    
-
     }    
 
 }
