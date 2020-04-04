@@ -10,30 +10,32 @@ namespace Challenge1
         {
 
             var cores = 7;
+            var inputTask1 = "(1, 6), (2, 2), (3, 4)";
+            var inputTask2 = "(1, 2)";
 
-            var inputTask1 = GetMatch("(1, 6), (2, 2), (3, 4)");
-            var inputTask2 = GetMatch("(1, 2)");
+            var x = GetMatch(inputTask1);
+            var y = GetMatch(inputTask2);
 
 
             var lastValue = 0;
             var comp = new List<string>();
 
-            for (int i = 0; i < inputTask1.Count; i++)
+            for (int i = 0; i < x.Count; i++)
             {
                 var sum = 0;
-                var row = inputTask1[i];
+                var row = x[i];
                 sum = row.value;
 
-                Console.WriteLine($"from X Key {row.id} value {row.value}");
-                for (int d = 0; d < inputTask2.Count; d++)
+                //Console.WriteLine($"from X Key {row.id} value {row.value}");
+                for (int d = 0; d < y.Count; d++)
                 {
-                    var child = inputTask2[d];
-                    Console.WriteLine($"DEL y Key {child.id} valor {child.value}");
+                    var child = y[d];
+                    //Console.WriteLine($"DEL y Key {child.id} valor {child.value}");
                     sum += child.value;
-                    Console.WriteLine($"Actual total value={sum}");
+                    //Console.WriteLine($"Actual total value={sum}");
                     if (sum == cores)
                     {
-                        Console.WriteLine($"Es igual {row.id}, {child.id}");
+                        //Console.WriteLine($"Es igual {row.id}, {child.id}");
                         comp.Add($"({row.id},{child.id})");
                     }
 
@@ -42,14 +44,16 @@ namespace Challenge1
                         lastValue = sum;
                     }
 
-                    if (i == inputTask1.Count - 1 && comp.Count == 0)
+                    if (i == x.Count - 1 && comp.Count == 0)
                     {
                         comp.Add($"({row.id},{child.id})");
                     }
                 }
             }
 
-            Console.WriteLine($"Correctly rows : { String.Join(",", inputTask1)}");
+            Console.WriteLine($"Input Task 1 : { String.Join(",", inputTask1)}");
+            Console.WriteLine($"Input Task 2 : { String.Join(",", inputTask2)}");
+            Console.WriteLine($"Final Result : { String.Join(",", comp)}");
             Console.ReadKey();
 
         }
@@ -61,7 +65,8 @@ namespace Challenge1
         /// <returns>List from TaskProcess object with valid string</returns>
         public static List<TaskProcess> GetMatch(string s)
         {
-            Regex pattern = new Regex(@"\(([\d\s][*\,][\d\s])*\)");
+            Regex pattern = new Regex(@"\((\s*\d+\s*[*\,]\s*\d+)*\)");
+            var r = Regex.Replace(s, @"\s +", "");
             MatchCollection matches = pattern.Matches(s);
             var result = new List<TaskProcess>();
 
@@ -69,9 +74,9 @@ namespace Challenge1
             {
                 foreach (Capture capture in match.Captures)
                 {
-                    var pedazo = capture.Value;
-                    string x = pedazo.Substring(pedazo.IndexOf('(') + 1, pedazo.LastIndexOf(',') - 1);
-                    string y = pedazo.Substring(pedazo.IndexOf(',') + 1, pedazo.IndexOf(')') - pedazo.IndexOf(',') - 1);
+                    var value = capture.Value;
+                    string x = value.Substring(value.IndexOf('(') + 1, value.LastIndexOf(',') - 1);
+                    string y = value.Substring(value.IndexOf(',') + 1, value.IndexOf(')') - value.IndexOf(',') - 1);
 
                     result.Add(new TaskProcess { id = Convert.ToInt32(x), value = Convert.ToInt32(y) });
                 }
