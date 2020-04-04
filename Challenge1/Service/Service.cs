@@ -36,10 +36,16 @@ namespace Challenge1.Service
                     for (int d = 0; d < y.Count; d++)
                     {
                         var sum = x[i].value + y[d].value;
+                        
                         if (lastValue < sum && sum <= cores)
                         {
-                            lastValue = sum;
                             Lasttask = $"({x[i].id},{y[d].id})";
+                            if (!comp.Contains(Lasttask))
+                            {
+                                lastValue = sum;
+                            }
+                            
+
                         }
                     }
                     if (i == x.Count - 1)
