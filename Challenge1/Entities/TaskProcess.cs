@@ -1,4 +1,4 @@
-﻿namespace Challenge1
+﻿namespace Challenge1.Entities
 {
     public class TaskProcess
     {
